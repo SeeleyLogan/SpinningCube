@@ -2,12 +2,12 @@
 
 void compile_shaders(App* app)
 {
-	GLuint basic_shaders[] =
+	GLuint basic_shaders[2] =
 	{
 		compile_shader(ASSETS_PATH"/shaders/basic_vert_shader.glsl", GL_VERTEX_SHADER),
 		compile_shader(ASSETS_PATH"/shaders/basic_frag_shader.glsl", GL_FRAGMENT_SHADER)
 	};
-	GLuint basic_shader_program = create_shader_program(basic_shaders, 1);
+	GLuint basic_shader_program = create_shader_program(basic_shaders, 2);
 	shput(app->shader_array, "basic_shader", basic_shader_program);
 }
 

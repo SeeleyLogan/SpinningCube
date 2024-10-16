@@ -34,7 +34,8 @@ void run_app(App* app)
 	create_buffers(app);
 	compile_shaders(app);
 
-	start(app);
+	update_start(app);
+	render_start(app);
 
     // game loop? render loop? IT'S A GOD DAMN LOOP!
     while(!glfwWindowShouldClose(app->window))

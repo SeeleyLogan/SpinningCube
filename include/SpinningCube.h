@@ -93,8 +93,9 @@ typedef float              f32;
 typedef struct Storage_Buffer
 {
 	GLuint buffer;
-	u32 occupied;
-	u32 capacity;
+	u8*	   buffer_map;
+	u32    occupied;
+	u32    capacity;
 }
 Storage_Buffer;
 
@@ -173,22 +174,18 @@ GLuint compile_shader(const GLchar* source, GLenum shader_type);
 GLuint create_shader_program(GLuint* shaders, u8 count);
 void compile_shaders(App* app);
 
-// =======
-// start.c
-// =======
-
-void start(App* app);
-
 // ========
 // update.c
 // ========
 
+void update_start(App* app);
 void update(App* app);
 
 // ========
 // render.c
 // ========
 
+void render_start(App* app);
 void render(App* app);
 
 #endif
