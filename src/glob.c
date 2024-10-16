@@ -1,16 +1,16 @@
 #include <SpinningCube.h>
 
-#define LINUX_STRCPY(dest, pattern, dest_len, ...) 	\
+#define LINUX_STRCPY(dest, pattern, dest_len, ...) 			\
 	{ 														\
-		dest = REALLOC(NULL, dest_len); 				\
+		dest = REALLOC(NULL, dest_len); 					\
 		memcpy(dest, pattern, dest_len); 					\
 		__VA_ARGS__ 										\
 	}
 
-#define LINUX_FILE_LOOP(regex, regex_prog, dir, ...) 		\
+#define LINUX_FILE_LOOP(regex, regex_prog, dir, ...) 			\
 	{ 															\
 		dir = opendir(path); 									\
-		while ((dirent = readdir(dir))) 							\
+		while ((dirent = readdir(dir))) 						\
 		{ 														\
 			const char* filename = dirent->d_name; 				\
 			if (!regexec(&regex_prog, filename, 0, NULL, 0)) 	\
@@ -20,7 +20,7 @@
 		} 														\
 	}
 
-#define WIN_FILE_LOOP(regex, ...) 							\
+#define WIN_FILE_LOOP(regex, ...) 								\
 	{ 															\
 		WIN32_FIND_DATAA file_data; 							\
 		HANDLE file_handle = FindFirstFileA(regex, &file_data); \
@@ -124,3 +124,4 @@ inline void free_glob(Glob* glob)
 {
 	FREE(glob->file_array);
 }
+

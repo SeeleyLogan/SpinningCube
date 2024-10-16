@@ -44,34 +44,50 @@ typedef float              f32;
 #define ERROR(err_lvl, ...) { fprintf(ERR, __VA_ARGS__); exit(err_lvl); terminate_app(NULL); }
 
 #ifdef DEBUG
-#define GL_CHECK(...) \
-    __VA_ARGS__; \
-    do { \
-    GLenum gl_err = glGetError(); \
-    if (gl_err != GL_NO_ERROR) \
-    { \
-        fprintf(ERR, "error: OpenGL %08x at %s:%i -> %s\n", gl_err, __FILE__, __LINE__, #__VA_ARGS__); \
-        exit(-1); \
-    } \
-    } while (0)
+#define GL_CHECK(...) 										\
+    __VA_ARGS__; 											\
+	{ 														\
+    	GLenum gl_err = glGetError(); 						\
+    	if (gl_err != GL_NO_ERROR) 							\
+    	{ 													\
+        	fprintf 										\
+			( 												\
+				ERR, 										\
+				"error: OpenGL %08x at %s:%i -> %s\n", 		\
+				gl_err, __FILE__, __LINE__, #__VA_ARGS__ 	\
+			); 												\
+        	exit(-1); 										\
+    	} 													\
+    }
+
 #else
     #define GL_CHECK(...) __VA_ARGS__
 #endif
 
-#define MALLOC_CHECK(...) \
-    ({ \
-	 	void* ptr = __VA_ARGS__; \
-		if (!ptr) \
-			ERROR(1, "error: memory allocation returned null at %s:%i -> %s\n", __FILE__, __LINE__, #__VA_ARGS__) \
-	 	ptr; \
+#define MALLOC_CHECK(...) 													\
+    ({ 																		\
+	 	void* ptr = __VA_ARGS__; 											\
+		if (!ptr) 															\
+			ERROR 															\
+			( 																\
+				1, 															\
+				"error: memory allocation returned null at %s:%i -> %s\n",	\
+				__FILE__, __LINE__, #__VA_ARGS__ 							\
+			) 																\
+	 	ptr; 																\
 	})
 
-#define FILE_OPEN(file, mode) \
-    ({ \
-	 	void* ptr = fopen(file, mode); \
-		if (!ptr) \
-			ERROR(1, "error: failed to open file '%s' at %s:%i\n", file, __FILE__, __LINE__) \
-	 	ptr; \
+#define FILE_OPEN(file, mode) 									\
+    ({ 															\
+	 	void* ptr = fopen(file, mode); 							\
+		if (!ptr) 												\
+			ERROR 												\
+			(													\
+				1, 												\
+				"error: failed to open file '%s' at %s:%i\n",	\
+				file, __FILE__, __LINE__						\
+			) 													\
+	 	ptr; 													\
 	})
 
 typedef struct Storage_Buffer
@@ -87,10 +103,16 @@ typedef struct App
     GLFWwindow* window;
 	struct
 	{
-		char* key;
+		char* 		   key;
 		Storage_Buffer value; 
 	} 
 	*ssbo_array;
+	struct
+	{
+		char*  key;
+		GLuint value;
+	}
+	*shader_array;
 }
 App;
 
@@ -100,12 +122,6 @@ typedef struct Glob
     u32    file_count;
 }
 Glob;
-
-typedef struct Shader
-{
-
-}
-Shader;
 
 // =====
 // app.c
@@ -138,6 +154,23 @@ void create_buffers(App* app);
 // shader.c
 // ========
 
+#define GL_SHADER_CHECK(func, iv_func, shader, status, ...)						\
+	{																			\
+		GL_CHECK(func(shader));													\
+		GLint success;															\
+		GL_CHECK(iv_func(shader, status, &success));							\
+		if (!success)															\
+		{																		\
+			GLint err_length;													\
+			GL_CHECK(iv_func(shader, GL_INFO_LOG_LENGTH, &err_length));			\
+			char info_log[err_length];											\
+			GL_CHECK(glGetShaderInfoLog(shader, err_length, NULL, info_log));	\
+			ERROR(1, __VA_ARGS__);												\
+		}																		\
+	}
+
+GLuint compile_shader(const GLchar* source, GLenum shader_type);
+GLuint create_shader_program(GLuint* shaders, u8 count);
 void compile_shaders(App* app);
 
 // =======

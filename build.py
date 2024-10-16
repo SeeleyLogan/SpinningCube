@@ -5,7 +5,7 @@ OPT_LEVEL = 0
 DEBUG = True
 
 ROOT_PATH = os.path.dirname(__file__)
-LIB_PATH  = "/home/logan/Programming/Libraries"
+LIB_PATH  = "/media/logan/Programming/Libraries"
 
 """
 Filesystem Setup
