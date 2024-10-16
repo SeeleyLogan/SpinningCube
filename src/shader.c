@@ -48,3 +48,4 @@ GLuint create_shader_program(GLuint* shaders, u8 count)
 
 	return shader_program;
 }
+

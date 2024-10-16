@@ -4,6 +4,7 @@
 int main()
 {
     App app = create_app(800, 600);
-    run_app(&app);
+    glfwSetWindowUserPointer(app.window, &app);
+	run_app(&app);
 }
 

@@ -15,6 +15,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <math.h>
 
 #ifdef linux
     #include <dirent.h>
@@ -102,6 +103,7 @@ Storage_Buffer;
 typedef struct App
 {
     GLFWwindow* window;
+	float aspect_ratio;
 	struct
 	{
 		char* 		   key;

@@ -25,7 +25,10 @@ App create_app(u16 width, u16 height)
 
     return (App)
     {
-        window
+        window,
+		width / (float) height,
+		NULL,
+		NULL
     };
 }
 
@@ -59,5 +62,8 @@ void terminate_app(App* app)
 
 void update_viewport(GLFWwindow* window, i32 width, i32 height)
 {
-    glViewport(0, 0, width, height);
+    GL_CHECK(glViewport(0, 0, width, height));
+
+	App* app = glfwGetWindowUserPointer(window);
+	app->aspect_ratio = width / (float) height;
 }

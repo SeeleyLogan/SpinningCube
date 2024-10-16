@@ -1,7 +1,7 @@
 [
 	{
-		"directory": "/media/logan/Programming/Projects/Personal/SpinningCube",
-		"arguments": ["gcc", "-I./include", "-I/media/logan/Programming/Libraries/glad/include", "-I/media/logan/Programming/Libraries/glfw-3.4/include", "-I/media/logan/Programming/Libraries/stb", "-DDEBUG"],
+		"directory": "/home/logan/Programming/Projects/Personal/SpinningCube",
+		"arguments": ["gcc", "-I./include", "-I/home/logan/Programming/Libraries/glad/include", "-I/home/logan/Programming/Libraries/glfw-3.4/include", "-I/home/logan/Programming/Libraries/stb", "-DDEBUG"],
 		"file": "./src/main.c"
 	}
 ]
