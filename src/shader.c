@@ -2,13 +2,19 @@
 
 void compile_shaders(App* app)
 {
-	GLuint basic_shaders[2] =
+	GLuint spinning_shaders[2] =
 	{
-		compile_shader(ASSETS_PATH"/shaders/basic_vert_shader.glsl", GL_VERTEX_SHADER),
-		compile_shader(ASSETS_PATH"/shaders/basic_frag_shader.glsl", GL_FRAGMENT_SHADER)
+		compile_shader(ASSETS_PATH"/shaders/spinning_vert.glsl", GL_VERTEX_SHADER),
+		compile_shader(ASSETS_PATH"/shaders/spinning_frag.glsl", GL_FRAGMENT_SHADER)
 	};
-	GLuint basic_shader_program = create_shader_program(basic_shaders, 2);
-	shput(app->shader_array, "basic_shader", basic_shader_program);
+	shput(app->shader_array, "spinning_shader", create_shader_program(spinning_shaders, 2));
+	
+	GLuint square_shaders[2] =
+	{
+		compile_shader(ASSETS_PATH"/shaders/square_vert.glsl", GL_VERTEX_SHADER),
+		compile_shader(ASSETS_PATH"/shaders/square_frag.glsl", GL_FRAGMENT_SHADER)
+	};
+	shput(app->shader_array, "square_shader", create_shader_program(square_shaders, 2));
 }
 
 GLuint compile_shader(const GLchar* source, GLenum shader_type)

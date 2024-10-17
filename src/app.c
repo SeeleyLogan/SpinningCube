@@ -1,3 +1,6 @@
+#define STB_DS_IMPLEMENTATION
+#define STB_IMAGE_IMPLEMENTATION
+
 #include <SpinningCube.h>
 
 void update_viewport(GLFWwindow* window, i32 width, i32 height);
@@ -15,8 +18,8 @@ App create_app(u16 width, u16 height)
     if (!window)
         ERROR(1, "GLFW failed to create a window")
 
-    glfwMakeContextCurrent(window);  // so we don't have to keep passing window to every glfw method
-    
+    glfwMakeContextCurrent(window);  // so we don't have to keep passing window to every glfw methods
+
     if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress))
         ERROR(1, "Glad was not very glad...")
 
@@ -26,7 +29,6 @@ App create_app(u16 width, u16 height)
     return (App)
     {
         window,
-		width / (float) height,
 		NULL,
 		NULL
     };
@@ -63,7 +65,4 @@ void terminate_app(App* app)
 void update_viewport(GLFWwindow* window, i32 width, i32 height)
 {
     GL_CHECK(glViewport(0, 0, width, height));
-
-	App* app = glfwGetWindowUserPointer(window);
-	app->aspect_ratio = width / (float) height;
 }

@@ -10,31 +10,35 @@ void create_buffers(App* app)
 	GL_CHECK(glGenVertexArrays(1, &VAO));
 	GL_CHECK(glBindVertexArray(VAO));
 
-	GLuint buffers[2];
-	GL_CHECK(glCreateBuffers(2, buffers));  // amount of buffers to make, must match buffers size
+	GLuint buffers[4];
+	GL_CHECK(glCreateBuffers(4, buffers));  // amount of buffers to make, must match buffers size
 	
-	// basic vertex buffer
-	GL_CHECK(glNamedBufferStorage(buffers[0], DEFAULT_STORAGE_BUFFER_SIZE, NULL, STORAGE_FLAGS));
-	u8* basic_vertex_buffer_map = GL_CHECK(glMapNamedBufferRange(buffers[0], 0, DEFAULT_STORAGE_BUFFER_SIZE, MAPPING_FLAGS));
-	Storage_Buffer basic_vertex_buffer =
-	{
-		buffers[0],
-		basic_vertex_buffer_map,
-		0,
-		DEFAULT_STORAGE_BUFFER_SIZE
-	};
-	shput(app->ssbo_array, "basic_vertex", basic_vertex_buffer);
+	shput(app->sb_array, "spinning_vertex", create_storage_buffer(buffers[0]));
+	shput(app->sb_array, "spinning_index", create_storage_buffer(buffers[1]));
 
-	// basic shader index buffer
-	GL_CHECK(glNamedBufferStorage(buffers[1], DEFAULT_STORAGE_BUFFER_SIZE, NULL, STORAGE_FLAGS));
-	u8* basic_index_buffer_map = GL_CHECK(glMapNamedBufferRange(buffers[1], 0, DEFAULT_STORAGE_BUFFER_SIZE, MAPPING_FLAGS));
-	Storage_Buffer basic_index_buffer =
+	shput(app->sb_array, "square_vertex", create_storage_buffer(buffers[2]));
+	shput(app->sb_array, "square_index",  create_storage_buffer(buffers[3]));
+}
+
+Storage_Buffer* create_storage_buffer(GLuint buffer)
+{
+	GL_CHECK(glNamedBufferStorage(buffer, DEFAULT_STORAGE_BUFFER_SIZE, NULL, STORAGE_FLAGS));
+	Storage_Buffer* storage_buffer = MALLOC_CHECK(REALLOC(NULL, sizeof(Storage_Buffer)));
+	void* map = GL_CHECK(glMapNamedBufferRange(buffer, 0, DEFAULT_STORAGE_BUFFER_SIZE, MAPPING_FLAGS));
+	
+	*storage_buffer = (Storage_Buffer)
 	{
-		buffers[1],
-		basic_index_buffer_map,
-		0,
-		DEFAULT_STORAGE_BUFFER_SIZE
+		buffer,
+		map, map,
+		map + DEFAULT_STORAGE_BUFFER_SIZE
 	};
-	shput(app->ssbo_array, "basic_index", basic_index_buffer);
+
+	return storage_buffer;
+}
+
+inline void copy_to_storage_buffer(Storage_Buffer* sb, void* src, u32 size)
+{
+	memcpy(sb->map_unoccupied, src, size);
+	sb->map_unoccupied += size;
 }
 

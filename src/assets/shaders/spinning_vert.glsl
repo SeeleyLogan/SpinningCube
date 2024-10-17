@@ -14,7 +14,6 @@ layout (std430, binding = 1) buffer index_data
 
 out vec4 vert_color;
 
-uniform float aspect_ratio;
 uniform float time;
 
 mat4 rotation_matrix;
@@ -31,8 +30,6 @@ void main()
 	uint tex_index    = indices[gl_VertexID]*8+6;
 
 	gl_Position    = vec4(vct[vertex_index], vct[vertex_index+1], vct[vertex_index+2], 1.0f) * rotation_matrix;
-	gl_Position.x /= aspect_ratio;
-	gl_PointSize   = 10;
 	vert_color	   = vec4(vct[color_index], vct[color_index+1], vct[color_index+2], 1.0f);
 }
 

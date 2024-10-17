@@ -10,7 +10,9 @@
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+
 #include <stb_ds.h>
+#include <stb_image.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -94,22 +96,21 @@ typedef float              f32;
 typedef struct Storage_Buffer
 {
 	GLuint buffer;
-	u8*	   buffer_map;
-	u32    occupied;
-	u32    capacity;
+	void*  map_start;
+	void*  map_unoccupied;
+	void*  map_end;
 }
 Storage_Buffer;
 
 typedef struct App
 {
     GLFWwindow* window;
-	float aspect_ratio;
 	struct
 	{
 		char* 		   key;
-		Storage_Buffer value; 
+		Storage_Buffer* value; 
 	} 
-	*ssbo_array;
+	*sb_array;
 	struct
 	{
 		char*  key;
@@ -138,6 +139,8 @@ void terminate_app(App* app);
 // util.c
 // ======
 
+float radf(float deg);
+double rad(double deg);
 bool is_key_down(App* app, u16 key);
 
 // ======
@@ -152,6 +155,8 @@ void free_glob(Glob* glob);
 // ========
 
 void create_buffers(App* app);
+Storage_Buffer* create_storage_buffer(GLuint buffer);
+void copy_to_storage_buffer(Storage_Buffer* sb, void* src, u32 size);
 
 // ========
 // shader.c
